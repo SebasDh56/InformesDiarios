@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Informe {{ cron.id }} · ES2027{% endblock %}
+
+{% block content %}
+<section class="hero compact">
+    <div>
+        <h2>Recorridos del cronograma</h2>
+        <p>{{ cron.delegacion }} · {{ cron.periodo_texto }}</p>
+    </div>
+    <a class="btn" href="/">← Volver</a>
+</section>
+
+<form action="/informe/{{ cron.id }}/guardar" method="post">
+    {% for fecha in fechas %}
+    <section class="day-block">
+        <div class="day-title">
+            <div>
+                <strong>{{ fecha.strftime("%d/%m/%Y") }}</strong>
+                <span>{{ cron.recorridos | selectattr("fecha","equalto",fecha) | list | length }} recorrido(s)</span>
+            </div>
+        </div>
+
+        {% for rec in cron.recorridos if rec.fecha == fecha %}
+        <article class="route-card">
+            <div class="route-head">
+                <div>
+                    <span class="route-number">{{ loop.index }}</span>
+                    <strong>{{ rec.hora_programada }}</strong>
+                    <b>{{ rec.parroquia }}</b>
+                </div>
+                <label class="switch-label">
+                    <input type="checkbox"
+                           name="hay_articulos_{{ rec.id }}"
+                           {% if rec.hay_articulos %}checked{% endif %}>
+                    ¿Hubo artículos promocionales?
+                </label>
+            </div>
+
+            <p class="muted"><b>Sector:</b> {{ rec.sector or "Sin sector" }}</p>
+
+            <div class="grid two">
+                <label>
+                    Calle inicial
+                    <input name="calle_inicial_{{ rec.id }}" value="{{ rec.calle_inicial or '' }}">
+                </label>
+
+                <label>
+                    Calle final
+                    <input name="calle_final_{{ rec.id }}" value="{{ rec.calle_final or '' }}">
+                </label>
+            </div>
+
+            <label>
+                Observaciones
+                <textarea name="observaciones_{{ rec.id }}" rows="3">{{ rec.observaciones or '' }}</textarea>
+            </label>
+        </article>
+        {% endfor %}
+    </section>
+    {% endfor %}
+
+    <div class="actions">
+        <button type="submit" class="btn primary">Guardar borrador</button>
+    </div>
+</form>
+
+<section class="card export-card">
+    <div>
+        <h3>Generar Word</h3>
+        <p>Primera salida funcional del MVP.</p>
+    </div>
+    <form action="/informe/{{ cron.id }}/word" method="post">
+        <label>
+            Número de informe
+            <input name="numero_informe" placeholder="DPPCH-2026-08-13-002" required>
+        </label>
+        <button class="btn success" type="submit">Generar Word</button>
+    </form>
+</section>
+{% endblock %}

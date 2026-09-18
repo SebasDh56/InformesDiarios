@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}ES2027{% endblock %}</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">▦</div>
+            <div>
+                <strong>ES2027</strong>
+                <small>Generador de informes</small>
+            </div>
+        </div>
+
+        <nav>
+            <a href="/">⌂ Inicio</a>
+            <a href="/">▣ Cronograma</a>
+            <a href="#">● Recorridos</a>
+            <a href="#">⌕ Anexos</a>
+            <a href="#">◉ Vista previa</a>
+            <a href="#">⇩ Exportar</a>
+        </nav>
+
+        <div class="side-note">
+            MVP monolítico<br>
+            FastAPI + SQLite<br>
+            Generación Word
+        </div>
+    </aside>
+
+    <main>
+        <header class="topbar">
+            <div>
+                <h1>Generador de Informes ES2027</h1>
+                <p>Recorridos territoriales · Cronograma · Evidencias · Word</p>
+            </div>
+            <span class="badge">MVP</span>
+        </header>
+        {% block content %}{% endblock %}
+    </main>
+</div>
+</body>
+</html>

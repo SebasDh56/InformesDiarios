@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Inicio · ES2027{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h2>Nuevo informe</h2>
+    <p>Importa el cronograma Excel. El sistema detectará automáticamente las jornadas y recorridos.</p>
+</section>
+
+<section class="card">
+    <h3>Importar cronograma Excel</h3>
+    <form action="/cronograma/importar" method="post" enctype="multipart/form-data" class="upload-form">
+        <input type="file" name="archivo" accept=".xlsx,.xlsm" required>
+        <button type="submit" class="btn primary">Importar cronograma</button>
+    </form>
+</section>
+
+<section class="card">
+    <div class="card-head">
+        <h3>Informes / cronogramas cargados</h3>
+        <span>{{ cronogramas|length }} registro(s)</span>
+    </div>
+
+    {% if cronogramas %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Archivo</th>
+                    <th>Delegación</th>
+                    <th>Período</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for c in cronogramas %}
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>{{ c.filename }}</td>
+                    <td>{{ c.delegacion or "-" }}</td>
+                    <td>{{ c.periodo_texto or "-" }}</td>
+                    <td><a class="btn small" href="/informe/{{ c.id }}">Abrir</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="empty">Todavía no has importado ningún cronograma.</div>
+    {% endif %}
+</section>
+{% endblock %}
